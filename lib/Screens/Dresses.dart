@@ -6,6 +6,8 @@ import 'package:dark_up/Utilities/DressModel.dart';
 import 'package:dark_up/Utilities/ImageFiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dark_up/Utilities/MySharedPrefManager.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DressesGridView extends StatefulWidget {
   @override
@@ -64,7 +66,13 @@ class _DressesGridViewState extends State<DressesGridView> {
             children: <Widget>[
               Card(
                 child: new GridTile(
-                  header: Text('$index'),
+                  header: Container(child: StreamBuilder(
+                    stream:Firestore.instance.collection("Dress").document('info').snapshots(),
+                    builder: (context, snapshot){
+                      if(!snapshot.hasData)return Text('Loading...Please Wait..');
+                      else return Text((snapshot.data)['price'].toString());
+                    },
+                  )),
                   footer: Text(
                     'AED ${dresses[index].price}',
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -75,21 +83,19 @@ class _DressesGridViewState extends State<DressesGridView> {
               IconButton(
                 onPressed: ()  {
                   setState(()  {
-                    setIcon(index);
+
                   });
                 },
                 icon: _icon !=null  ? _icon: Icon(Icons.favorite_border) ,
               ),
+
             ],
           ),
         );
       },
     );
   }
-   setIcon(int index)async{
-    _icon = await toggleFavButton(index);
 
-  }
   Future<Icon> toggleFavButton(int index) async {
     String key = dresses[index].id;
     bool isPresent = await MySharedPreferenceManager.isValuePresent(key);
@@ -110,16 +116,14 @@ class _DressesGridViewState extends State<DressesGridView> {
     }
   }
 
-/*
-  Uint8List loadImages(int index) {
-    StorageReference photoRef =
-        FirebaseStorage.instance.ref().child("Dress_Photos");
-    String photoPath = "d$index.jpg";
-    photoRef.child(photoPath).getData(7).then((data) {
-      return data;
-    }).catchError((error) => print("$error"));
+
+  Future<DocumentSnapshot> fetchInfo(String item) async{
+       Future<DocumentSnapshot> docSnapshot = Firestore.instance.collection('Dress').document('info').get();
+       DocumentSnapshot doc = await docSnapshot;
+       print('////////////////// ${doc['$item']}');
+
   }
-*/
+
 
   PreferredSizeWidget _getDressesAppbar(BuildContext context) {
     return AppBar(

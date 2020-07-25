@@ -13,7 +13,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor:  Color(0xffF5F5F5),
+      backgroundColor:  Color(0xffF0F0F0),
       appBar: DefaultAppBar(title: 'MY PROFILE'),
       body: _profileBody(screenSize: screenSize),
     );
@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: screenSize.height / 4.5,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/bgr3.jpg'),
+                  image: AssetImage('assets/bgr.png'),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.9), BlendMode.dstATop),
@@ -38,14 +38,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Column(
               children: <Widget>[
                 SizedBox(
-                  height: ((screenSize.height / 5) - 40),
-                ), //profile background img size - 65
+                  height: ((screenSize.height / 6) - 40),
+                ),
                 Center(
                   child: Column(
                     children: <Widget>[
                       Container(
-                        width: 100,
-                        height: 100,
+                        width: 120,
+                        height: 120,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage('assets/profile_pic.jpg'),
@@ -69,65 +69,95 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
         SizedBox(height: 4,),
-_profileOptionsList(screenSize),
-     //   _profileOptionsList(screenSize),
+        _profileOptionsList(screenSize),
       ],
     );
   }
   Widget _profileOptionsList(Size screenSize){
-    List<String> items1 =[
-      'MY ORDERS',
-      'MY WISHLIST',
-      'MY WALLET',
-      'MY ADDRESSES',
-    ];
-    List<String> items2 =[
-      'CHANGE LANGUAGE',
-      'SUPPORT',
-      'CURRENCY',
-      'LOGOUT',
-    ];
 
-    return Container(
-      child:Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.card_giftcard,),
-                onPressed: () => {},
-              ),
-              Text('${items1[0]}',style: TextStyle(fontWeight: FontWeight.w900,),),
-            ],
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 132,
+          child: Flex(
+            direction: Axis.vertical,
+                children: <Widget>[
+                  Expanded(flex: 1,
+                    child: _profileListItems(iconData:Icons.card_giftcard,text: 'MY ORDERS'),
+                  ),
+                  Expanded(flex: 1,
+                    child: _profileListItems(iconData: Icons.favorite,text: 'MY WISHLIST'),
+                  ),
+                  Expanded(flex: 1,
+                    child: _profileListItems(iconData: Icons.account_balance_wallet,text: 'MY WALLET') ,
+                  ),
+
+
+
+                  Expanded(flex: 1,
+                    child: _profileListItems(iconData:Icons.location_on,text: 'MY ADDRESSES') ,
+                  ),
+                ],
+
           ),
-          Divider(color: Colors.black,)
-        ],
-      ),
+
+
+
+        ),
+        SizedBox(height: 28,),
+        Container(
+          height: 132,
+          child: Flex(
+            direction: Axis.vertical,
+            children: <Widget>[
+              Expanded(flex: 1,
+                child: _profileListItems(iconData:Icons.language,text: 'CHANGE LANGUAGE'),
+              ),
+              Expanded(flex: 1,
+                child: _profileListItems(iconData: Icons.email,text: 'SUPPORT') ,
+              ),
+
+              Expanded(flex: 1,
+                child: _profileListItems(iconData: Icons.monetization_on,text: 'CURRENCY'),
+              ),
+
+              Expanded(flex: 1,
+                child: _profileListItems(iconData:Icons.power_settings_new,text: 'LOGOUT') ,
+              ),
+            ],
+
+          ),
+        ),
+      ],
     );
 
-/*
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: items1.length,
-      itemBuilder: (BuildContext context,int index){
-        return Container(
-          height: 30,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.card_giftcard,),
-                onPressed: () => {},
-              ),
-              Text('${items1[index]}',style: TextStyle(fontWeight: FontWeight.w900,),),
-              Divider(thickness: 2,height: 10,color: Colors.black,)
-            ],
-          ),
-        );
-      },
 
-    );*/
 
   }
+
+  Widget _profileListItems({IconData iconData, String text}){
+    return ListTile(
+
+      onTap: (){
+        if(text=='MY ORDERS')print('My orders selected');
+        if(text=='MY WISHLIST')print('My WISHLIST selected');
+        if(text=='MY WALLET')print('My WALLET selected');
+        if(text=='MY ADDRESSES')print('My ADDRESSES selected');
+        if(text=='CHANGE LANGUAGE')print('CHANGE LANGUAGE');
+        if(text=='SUPPORT')print('SUPPORT');
+        if(text=='CURRENCY')print('CURRENCY');
+        if(text=='LOGOUT')print('LOGOUT');},
+
+      dense: true,
+      leading:  Icon(iconData,color: Colors.black,),
+      title: Align(
+        child: new Text('$text', style: TextStyle(color:Colors.black,fontWeight:FontWeight.w900,fontSize: 12),),
+        alignment: Alignment(-1.2, 0),
+      ),
+      trailing: Icon(Icons.navigate_next,color: Colors.black,),
+    );
+
+  }
+
+
 }

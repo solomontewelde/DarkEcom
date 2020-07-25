@@ -1,3 +1,4 @@
+import 'package:dark_up/Custom_Widgets/DefaultAppBar.dart';
 import 'package:dark_up/Screens/Dresses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,26 +10,7 @@ class Clothing extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.black,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              title: Text(
-                'CLOTHING',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18.0,
-                    letterSpacing: 0.5,
-                    fontWeight: FontWeight.w900),
-              ),
-              centerTitle: true,
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-            ),
+            appBar: DefaultAppBar(title:'CLOTHING'),
             body: _clothingBody(),
           ),
         ],
@@ -73,10 +55,14 @@ class Clothing extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ListTile(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DressesGridView()));
+                    switch (index) {
+                      case 6:
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DressesGridView()));
+                        break;
+                    }
                   },
                   title: Text(
                     '${listItems[index]}',

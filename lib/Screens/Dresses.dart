@@ -16,20 +16,9 @@ class DressesGridView extends StatefulWidget {
 
 class _DressesGridViewState extends State<DressesGridView> {
   Icon _icon;
-  static List<String> data = MyImages.imagePaths;
-  List<bool> _isFavorite = List<bool>.generate(data.length, (_) => false);
-  List<DressModel> dresses = [
-    DressModel('d1', 'BLUE WOMEN DRESS', '129'),
-    DressModel('d2', 'BLACK PEACH DRESS', '789'),
-    DressModel('d3', 'PINK WOMEN DRESS Dress', '429'),
-    DressModel('d4', 'WEIRED DRESS', '350'),
-    DressModel('d5', 'COLORFUL DRESS', '329'),
-    DressModel('d6', 'SHORT RED DRESS', '189'),
-    DressModel('d7', 'Red-ISH DRESS', '500'),
-    DressModel('d8', 'CASUAL BROWN DRESS', '200'),
-    DressModel('d9', 'MAROON FORMAL DRESS', '350'),
-    DressModel('d10', 'Red DRESS', '350'),
-  ];
+  //List<bool> _isFavorite = List<bool>.generate(data.length, (_) => false);
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,65 +27,58 @@ class _DressesGridViewState extends State<DressesGridView> {
     );
   }
 
-  @override
-  void initState() {
-    // _icon = Icon(Icons.favorite_border);
-  }
-
   Widget _dressesGridView() {
     var size = MediaQuery.of(context).size;
     const int NOTIFICATIONBAR_HEIGHT = 24;
     final double itemHeight =
         (size.height - kToolbarHeight - NOTIFICATIONBAR_HEIGHT) / 2;
-    final double itemWidth = size.width / 2;
+    final double itemWidth = size.width / 1.8;
     Orientation orientation = Orientation.portrait;
 
-    return GridView.builder(
-      padding: EdgeInsets.fromLTRB(12, 18, 12, 18),
-      itemCount: data.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: (itemWidth / itemHeight),
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 25,
-          crossAxisCount: (orientation == Orientation.portrait) ? 2 : 3),
-      itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          onTap: () => print('$index'),
-          child: Stack(
-            children: <Widget>[
-              Card(
-                child: new GridTile(
-                  header: Container(child: StreamBuilder(
-                    stream:Firestore.instance.collection("Dress").document('info').snapshots(),
-                    builder: (context, snapshot){
-                      if(!snapshot.hasData)return Text('Loading...Please Wait..');
-                      else return Text((snapshot.data)['price'].toString());
-                    },
-                  )),
-                  footer: Text(
-                    'AED ${dresses[index].price}',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+    return StreamBuilder(
+      stream: Firestore.instance.collection('Dress').snapshots(),
+      builder: (context,snapshot){
+        return GridView.builder(
+          padding: EdgeInsets.fromLTRB(12, 18, 12, 18),
+          itemCount: snapshot.data.documents.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: (itemWidth / itemHeight),
+              mainAxisSpacing: 20,
+              crossAxisSpacing: 25,
+              crossAxisCount: (orientation == Orientation.portrait) ? 2 : 3),
+              itemBuilder: (BuildContext context, int index) {
+                DocumentSnapshot dress = snapshot.data.documents[index];
+            return GestureDetector(
+              onTap: () => print('$index'),
+              child: Stack(
+                children: <Widget>[
+                  Card(
+                    child: new GridTile(
+                      footer: Text(
+                        'AED ${dress['price']}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      child: Image.network(dress['image'],fit: BoxFit.fill,),
+                    ),
                   ),
-                  child: Image.asset(data[index]),
-                ),
-              ),
-              IconButton(
-                onPressed: ()  {
-                  setState(()  {
+                  IconButton(
+                    onPressed: ()  {
+                      setState(()  {
+                      });
+                    },
+                    icon: Icon(Icons.favorite_border,size: 35,) ,
+                  ),
 
-                  });
-                },
-                icon: _icon !=null  ? _icon: Icon(Icons.favorite_border) ,
+                ],
               ),
-
-            ],
-          ),
+            );
+          },
         );
       },
     );
   }
 
-  Future<Icon> toggleFavButton(int index) async {
+/*  Future<Icon> toggleFavButton(int index) async {
     String key = dresses[index].id;
     bool isPresent = await MySharedPreferenceManager.isValuePresent(key);
     if (isPresent) {
@@ -114,8 +96,13 @@ class _DressesGridViewState extends State<DressesGridView> {
         color: Colors.black,
       );
     }
-  }
+  }*/
 
+  Future<void> isLiked(String uid) async{
+    Future<DocumentSnapshot> documentSnapShot = Firestore.instance.collection('Favorites').document().get();
+    DocumentSnapshot doc = await documentSnapShot;
+    print('Solomon liked: ${doc['solomon']!=null}');
+  }
 
   Future<DocumentSnapshot> fetchInfo(String item) async{
        Future<DocumentSnapshot> docSnapshot = Firestore.instance.collection('Dress').document('info').get();

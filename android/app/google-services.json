@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "102369241153",
+    "firebase_url": "https://darkup-24643.firebaseio.com",
+    "project_id": "darkup-24643",
+    "storage_bucket": "darkup-24643.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102369241153:android:9f3ede7672f36135ad7ec0",
+        "android_client_info": {
+          "package_name": "com.example.dark_up"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102369241153-0cufp859sajg50to319v0in77ugmhcbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDj3K2N_1jKL5p6SljyusMuv91zC6Tdc1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102369241153-0cufp859sajg50to319v0in77ugmhcbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

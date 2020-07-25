@@ -70,10 +70,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       ),
     );
   }
-  Widget _buildBody() {
-    // return a widget representing a page
 
-  }
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;

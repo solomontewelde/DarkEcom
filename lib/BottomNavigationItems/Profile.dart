@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -58,7 +59,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       SizedBox(height: 4,),
-                      Text('WELCOME,\n  PANDA',style: TextStyle(fontSize:12,fontWeight: FontWeight.w900,letterSpacing: 0.5),)
+                      Text('WELCOME,',style: TextStyle(fontSize:12,fontWeight: FontWeight.w900,letterSpacing: 0.5),),
+                      Text('MASTER SHIFU',style: TextStyle(fontSize:12,fontWeight: FontWeight.w900,letterSpacing: 0.5),)
                     ],
                   ),
                 ),
@@ -139,15 +141,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return ListTile(
 
       onTap: (){
-        if(text=='MY ORDERS')print('My orders selected');
-        if(text=='MY WISHLIST')print('My WISHLIST selected');
+        if(text==text) print('My orders');
+       if(text=='MY WISHLIST')print('My WISHLIST selected');
         if(text=='MY WALLET')print('My WALLET selected');
         if(text=='MY ADDRESSES')print('My ADDRESSES selected');
         if(text=='CHANGE LANGUAGE')print('CHANGE LANGUAGE');
         if(text=='SUPPORT')print('SUPPORT');
         if(text=='CURRENCY')print('CURRENCY');
-        if(text=='LOGOUT')print('LOGOUT');},
-
+        if(text=='LOGOUT')print('LOGOUT');
+  },
       dense: true,
       leading:  Icon(iconData,color: Colors.black,),
       title: Align(

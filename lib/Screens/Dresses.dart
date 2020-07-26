@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dark_up/Utilities/MySharedPrefManager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dark_up/Utilities/FavoritesHandler.dart';
 
 class DressesGridView extends StatefulWidget {
   @override
@@ -15,17 +16,28 @@ class DressesGridView extends StatefulWidget {
 }
 
 class _DressesGridViewState extends State<DressesGridView> {
-  Icon _icon;
-  //List<bool> _isFavorite = List<bool>.generate(data.length, (_) => false);
-
+ List<String> _isFavorite=[];
 
   @override
   Widget build(BuildContext context) {
+    loadSharedPreferences();
     return Scaffold(
       appBar: _getDressesAppbar(context),
       body: _dressesGridView(),
     );
   }
+
+  Future<Null>loadSharedPreferences()async{
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+     dynamic keys = preferences.getKeys();
+     List<String>isFavorite=[];
+     for(String key in keys){
+       isFavorite.add(key);
+        }
+     _isFavorite = isFavorite;
+    print('Number of liked items: ${_isFavorite.length}');
+  }
+
 
   Widget _dressesGridView() {
     var size = MediaQuery.of(context).size;
@@ -58,15 +70,16 @@ class _DressesGridViewState extends State<DressesGridView> {
                         'AED ${dress['price']}',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      child: Image.network(dress['image'],fit: BoxFit.fill,),
+                      child: dress['image']!=''?Image.network(dress['image'],fit: BoxFit.fill,):
+                      CircularProgressIndicator(backgroundColor:Colors.black,),
                     ),
                   ),
                   IconButton(
-                    onPressed: ()  {
-                      setState(()  {
-                      });
+                    onPressed: () async{
+                       await FavoritesHandler.toggleFavButton(dress['image']); //using dress['image'] string as key for testing
+                       setState((){}); //required
                     },
-                    icon: Icon(Icons.favorite_border,size: 35,) ,
+                    icon: _isFavorite.contains(dress['image'])?Icon(Icons.favorite,size: 35,):Icon(Icons.favorite_border,size: 35,) ,
                   ),
 
                 ],
@@ -78,25 +91,7 @@ class _DressesGridViewState extends State<DressesGridView> {
     );
   }
 
-/*  Future<Icon> toggleFavButton(int index) async {
-    String key = dresses[index].id;
-    bool isPresent = await MySharedPreferenceManager.isValuePresent(key);
-    if (isPresent) {
-      print('$index disLiked');
-      MySharedPreferenceManager.removePreference(key);
-      return Icon(
-        Icons.favorite_border,
-        color: Colors.black,
-      );
-    } else {
-      print('$index Liked');
-      MySharedPreferenceManager.savePreference(key, dresses[index].id);
-      return Icon(
-        Icons.favorite,
-        color: Colors.black,
-      );
-    }
-  }*/
+
 
   Future<void> isLiked(String uid) async{
     Future<DocumentSnapshot> documentSnapShot = Firestore.instance.collection('Favorites').document().get();
@@ -110,7 +105,6 @@ class _DressesGridViewState extends State<DressesGridView> {
        print('////////////////// ${doc['$item']}');
 
   }
-
 
   PreferredSizeWidget _getDressesAppbar(BuildContext context) {
     return AppBar(

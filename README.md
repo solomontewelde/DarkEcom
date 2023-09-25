@@ -1,6 +1,5 @@
 # dark_up
 
-An e-commerce app developed by Solomon and designed by MVP application and game design company, Abu Dhabi.
 ![Capture0](https://user-images.githubusercontent.com/31589150/130831534-8ac9a326-c3b6-4c60-b2fc-a1d715dea4c0.PNG)
 ![Capture1](https://user-images.githubusercontent.com/31589150/130831549-7c615c31-3d63-4fb1-94cc-5795252a332b.PNG)![Capture3](https://user-images.githubusercontent.com/31589150/130831602-4d1bdc8f-c1a6-40a8-8d37-ea9c329290ee.PNG)
 ![capture 2](https://user-images.githubusercontent.com/31589150/130831502-cb48ec2e-9a04-4358-942d-787695a27405.PNG)
